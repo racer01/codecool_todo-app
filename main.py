@@ -8,7 +8,6 @@ def OpenFile(f):
     db_file = open(f, "r")
     d = {}
     for line in db_file:
-        # l.append(line.strip())
         splitted = line.strip().split(sep=',')
         if splitted[0] == 'x':
             d[splitted[1]] = True
@@ -26,7 +25,6 @@ def WriteFile(f, d):
         elif not d[line]:
             db_file.write("_," + line + "\n")
     db_file.close()
-    # db_file.
 
 
 def AddItem(d):
@@ -35,6 +33,7 @@ def AddItem(d):
     input_string = input("Add an item: ")
     if input_string not in d:
         d[input_string] = False
+        print("Item added")
     else:
         print("Item already in list")
     return d
@@ -53,7 +52,15 @@ def MarkItem(d):
     ListItems(d)
     input_int = int(input("Which one you want to mark as completed: "))
     d[list(d.keys())[input_int - 1]] = True
-    print(d[list(d.keys())[input_int - 1]])
+    # print(d[list(d.keys())[input_int - 1]])
+
+
+def DeleteMarked(d):
+    new_d = {}
+    for item in d:
+        if not d[item]:
+            new_d[item] = False
+    return new_d
 
 
 def main():
@@ -63,6 +70,7 @@ def main():
 
     db = OpenFile(db_filename)
     while run:
+        print()
         input_string = \
             input("Please specify a command [list, add, mark, archive]: ")
         if input_string == "list":
@@ -72,7 +80,7 @@ def main():
         elif input_string == "mark":
             MarkItem(db)
         elif input_string == "archive":
-            db = {}
+            db = DeleteMarked(db)
             print("All completed tasks got deleted.")
         elif input_string == "x":
             WriteFile(db_filename, db)
