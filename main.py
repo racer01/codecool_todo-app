@@ -1,10 +1,11 @@
 # ToDo-app
-import curses
-from curses import wrapper
+import os.path
 
 
 def OpenFile(f):
     """Reads file specified in parameter, and returns a list with it's rows"""
+    if not os.path.isfile(f):
+        open(f, "w").close()
     db_file = open(f, "r")
     d = {}
     for line in db_file:
